@@ -1,6 +1,7 @@
 'use strict'
 var bcrypt = require('bcrypt-nodejs');
 var Usuario = require('../Models/Usuario');
+var jwt = require('../Services/Jwt');
 
 function pruebas (req,res){
     res.status(200).send({
@@ -22,9 +23,10 @@ function saveUsuario(req, res){
         usuario.email = params.email
         usuario.status = params.status
         usuario.avatar = params.avatar
+
         if (params.password){
             bcrypt.hash(params.password, null, null,function(err,hash){
-                usuario.params = hash;
+                usuario.password = hash
                 if(usuario.name != null && usuario.surname != null && usuario.email != null){
                     // Guarda el usuario
                     usuario.save((err,userStored)=>{
@@ -35,7 +37,7 @@ function saveUsuario(req, res){
                                 res.status(404).send({message:'No se ha registrado el usuario'});
                             }else{
                                 res.status(200).send({usuario: userStored});
-                                // res.status(200).send(usuario.params);
+                                // res.status(200).send(usuario.password);
                             }
 
                         }
@@ -62,12 +64,16 @@ function loginUsuario(req, res){
             if (!usuario){
                 res.status(404).send({message: 'No existe el usuario'});
             }else{
-                //Comprobar contraseña
+                // Comprobar contraseña
                 bcrypt.compare(password,usuario.password,function(err,check){
                     if(check){
                         //Devuelve datos del usuario logueado
                         if(params.gethash){
+                            res.status(200).send({usuario});
                             //Devuelve el token de jwt
+                            // res.status(200).send({
+                            //     token: jwt.createToken(usuario)
+                            // });
                         }else{
                             res.status(200).send({usuario});
                         }
@@ -83,8 +89,27 @@ function loginUsuario(req, res){
     })
 
 }
+function updateUser(req, res){
+    var userId = req.params.id;
+    var update = req.body;
+
+    Usuario.findByIdAndUpdate(userId,update,(err,userUpdated) =>{
+        if(err){
+            res.status(500).send({message: 'No se pudo actualizar el usuario'});
+        }else{
+            if(!userUpdated){
+                res.status(200).send({message: 'No se actulizo el usuario'});
+            }else{
+                res.status(200).send({usuario: userUpdated});
+            }
+        }
+
+    });
+
+}
 module.exports = {
     pruebas,
     saveUsuario,
-    loginUsuario
+    loginUsuario,
+    updateUser
 };

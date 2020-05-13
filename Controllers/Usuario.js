@@ -1,4 +1,6 @@
 'use strict'
+var fs = require('fs');
+var path = require('path');
 var bcrypt = require('bcrypt-nodejs');
 var Usuario = require('../Models/Usuario');
 var jwt = require('../Services/Jwt');
@@ -71,9 +73,9 @@ function loginUsuario(req, res){
                         if(params.gethash){
                             res.status(200).send({usuario});
                             //Devuelve el token de jwt
-                            // res.status(200).send({
-                            //     token: jwt.createToken(usuario)
-                            // });
+                            res.status(200).send({
+                                token: jwt.createToken(usuario)
+                            });
                         }else{
                             res.status(200).send({usuario});
                         }
@@ -107,9 +109,53 @@ function updateUser(req, res){
     });
 
 }
+function uploadImage(req, res){
+    var userId = req.params.id;
+    var fileName = 'No subido..';
+    
+    if(req.files){
+        var filePath = req.files.avatar.path;
+        var fileSplit = filePath.split('\\');
+        var fileName = fileSplit[2];
+
+        var extSplit = fileName.split('\.');
+        var fileExt = extSplit[1];
+
+        if (fileExt == 'png' || fileExt == 'jpg' ||fileExt == 'gif'  ){
+            Usuario.findByIdAndUpdate(userId,{avatar:fileName},(err,userUpdated)=>{
+                if(err){
+                    res.status(500).send({message: 'No se pudo actualizar el usuario'});
+                }else{
+                    if(!userUpdated){
+                        res.status(200).send({message: 'No se actulizo el usuario'});
+                    }else{
+                        res.status(200).send({usuario: userUpdated});
+                    }
+                }
+            });
+        }else{
+            res.status(200).send({message: 'Extension del archivo no valida'});
+        }
+    }else{
+        res.status(200).send({message: 'No se encotro la imagen'});
+    }
+}
+function getImagen (req, res){
+    var imageFile = req.params.imageFile;
+    var pathFile = './uploads/usuario/'+imageFile;
+    fs.exists(pathFile,function(exists){
+        if(exists){
+            res.sendFile(path.resolve(pathFile));
+        }else{
+            res.status(200).send({message: 'No existe la imagen'});
+        }
+    })
+}
 module.exports = {
     pruebas,
     saveUsuario,
     loginUsuario,
-    updateUser
+    updateUser,
+    uploadImage, 
+    getImagen
 };

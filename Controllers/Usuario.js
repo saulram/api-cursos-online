@@ -16,7 +16,6 @@ function saveUsuario(req, res){
         var usuario = new Usuario();
         var params = req.body;
 
-        console.log(params.password);
         usuario.name = params.name;
         usuario.surname = params.surname;
         usuario.description  = params.description

@@ -1,11 +1,11 @@
 'use strict'
 
 var mongoose = require('mongoose');
-var schema = mongoose.schema;
+var Schema = mongoose.Schema;
 
-var CategoriaSchema = schema({
+var CategoriaSchema = Schema({
     name: String,
     description : String
-})
+});
 
 module.exports = mongoose.model('Categoria',CategoriaSchema);

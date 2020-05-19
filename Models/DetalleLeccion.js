@@ -1,12 +1,12 @@
 'use strict'
 
 var mongoose = require('mongoose');
-var schema = mongoose.schema;
+var Schema = mongoose.Schema;
 
-var DetLeccionSchema = schema({
+var DetLeccionSchema = Schema({
     contenido: String,
     video:  String,
-    leccion: {type: schema.ObjectId,ref:'Leccion'}
-})
+    // leccion: {type: schema.ObjectId,ref:'Leccion'}
+});
 
 module.exports = mongoose.model('DetLeccion',DetLeccionSchema);

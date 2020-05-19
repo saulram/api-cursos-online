@@ -61,7 +61,7 @@ function saveCategoria (req, res){
             res.status(500).send({message: 'Error al guardar la Categoria'});
         }else{
             if(!categoriaStored){
-                res.status(404).send({message: 'No se pudo guardar la Categoria'})
+                res.status(404).send({message: 'No se pudo guardar la Categoria'});
             }else{
                 res.status(200).send({categoria: categoriaStored});
                 console.log(params);
@@ -78,9 +78,35 @@ function updateCategoria (req, res){
             res.status(500).send({message: 'Error en la peticion'});
         }else{
             if(!categoriaUpdated){
-                res.status(404).send({message: 'No se pudo actualizar la Categoria'})
+                res.status(404).send({message: 'No se pudo actualizar la Categoria'});
             }else{
                 res.status(200).send({categoria: categoriaUpdated});
+            }
+        }
+    });
+}
+function deleteCategoria (req, res){
+    var categoriaId = req.params.id;
+
+    Categoria.findByIdAndRemove(categoriaId, (err, categoriaRemoved) =>{
+        if(err){
+            res.status(500).send({message: 'Error en la peticion'});
+        }else{
+            if(!categoriaRemoved){
+                res.status(404).send({message: 'No se pudo elimanar la Categoria'});
+            }else{
+                res.status(200).send({message: 'Bien elimando'});
+                // Curso.find({categria: categoriaRemoved._id}).remove((err,cursoRemoved)=>{
+                //     if(err){
+                //         res.status(500).send({message: 'Error en la peticion'});
+                //     }else{
+                //         if(!cursoRemoved){
+                //             res.status(404).send({message: 'No se pudo elimanar el Curso'});
+                //         }else{
+                //             // Validacion de los hijos del modelo Curso.js
+                //         }
+                //     }
+                // });
             }
         }
     });
@@ -90,5 +116,6 @@ module.exports = {
     getCategoria,
     getCategorias,
     saveCategoria,
-    updateCategoria
+    updateCategoria,
+    deleteCategoria
 };

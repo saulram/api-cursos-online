@@ -1,6 +1,7 @@
 'use strict'
 var fs = require('fs');
 var path = require('path');
+var pagina = require('mongoose-pagination');
 
 var Categoria = require('../Models/Categoria');
 // var Curso = require('../Models/Curso');
@@ -10,7 +11,43 @@ var Categoria = require('../Models/Categoria');
 // var Test = require('../Models/Test');
 
 function getCategoria (req, res){
-    res.status(200).send({message: 'Funciona api getcategoria'});
+    var categoriaId = req.params.id;
+
+    Categoria.findById(categoriaId, (err, categoria) =>{
+        if(err){
+            res.status(500).send({message:'Error en la peticion'});
+        }else{
+            if(!categoria){
+                res.status(404).send({message:'No existe la categoria'});
+            }else{
+                res.status(500).send({categoria: categoria});
+            }
+        }
+    });
+}
+function getCategorias (req, res){
+    if(req.params.page){
+        var paginas = req.params.page;
+    }else{
+        var paginas = 1;
+    }
+    var itemsPorPagina = 5;
+
+    Categoria.find().sort('name').paginate(paginas,itemsPorPagina,function(err,categorias,total){
+        if(err){
+            res.status(500).send({message:'Error en la peticion'});
+        }else{
+            if(!categorias){
+                res.status(404).send({message:'No existen categorias'});
+            }else{
+                return res.status(500).send({
+                    totalItems: total,
+                    categorias:categorias
+                });
+            }
+        }
+    });
+
 }
 function saveCategoria (req, res){
     var categoria = new Categoria();
@@ -26,8 +63,24 @@ function saveCategoria (req, res){
             if(!categoriaStored){
                 res.status(404).send({message: 'No se pudo guardar la Categoria'})
             }else{
-                res.status(200).send({message: categoriaStored});
+                res.status(200).send({categoria: categoriaStored});
                 console.log(params);
+            }
+        }
+    });
+}
+function updateCategoria (req, res){
+    var categoriaId = req.params.id;
+    var update = req.body;
+
+    Categoria.findByIdAndUpdate(categoriaId, update, (err, categoriaUpdated) =>{
+        if(err){
+            res.status(500).send({message: 'Error en la peticion'});
+        }else{
+            if(!categoriaUpdated){
+                res.status(404).send({message: 'No se pudo actualizar la Categoria'})
+            }else{
+                res.status(200).send({categoria: categoriaUpdated});
             }
         }
     });
@@ -35,5 +88,7 @@ function saveCategoria (req, res){
 
 module.exports = {
     getCategoria,
-    saveCategoria
+    getCategorias,
+    saveCategoria,
+    updateCategoria
 };

@@ -5,12 +5,6 @@ var bcrypt = require('bcrypt-nodejs');
 var Usuario = require('../Models/Usuario');
 var jwt = require('../Services/Jwt');
 
-function pruebas (req,res){
-    res.status(200).send({
-        message: 'Probando controlador'
-    });
-}
-
 function saveUsuario(req, res){
 
         var usuario = new Usuario();
@@ -32,7 +26,7 @@ function saveUsuario(req, res){
                     // Guarda el usuario
                     usuario.save((err,userStored)=>{
                         if(err){
-                            res.status(500).send({message:'Error al guradar el usuario'});
+                            res.status(500).send({message:'Error en la peticion'});
                         }else{
                             if(!userStored){
                                 res.status(404).send({message:'No se ha registrado el usuario'});
@@ -96,7 +90,7 @@ function updateUser(req, res){
 
     Usuario.findByIdAndUpdate(userId,update,(err,userUpdated) =>{
         if(err){
-            res.status(500).send({message: 'No se pudo actualizar el usuario'});
+            res.status(500).send({message: 'Error en la peticion'});
         }else{
             if(!userUpdated){
                 res.status(200).send({message: 'No se actulizo el usuario'});
@@ -123,7 +117,7 @@ function uploadImage(req, res){
         if (fileExt == 'png' || fileExt == 'jpg' ||fileExt == 'gif'  ){
             Usuario.findByIdAndUpdate(userId,{avatar:fileName},(err,userUpdated)=>{
                 if(err){
-                    res.status(500).send({message: 'No se pudo actualizar el usuario'});
+                    res.status(500).send({message: 'Error en la peticion'});
                 }else{
                     if(!userUpdated){
                         res.status(200).send({message: 'No se actulizo el usuario'});
@@ -151,7 +145,6 @@ function getImagen (req, res){
     })
 }
 module.exports = {
-    pruebas,
     saveUsuario,
     loginUsuario,
     updateUser,

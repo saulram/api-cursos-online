@@ -58,7 +58,7 @@ function saveCategoria (req, res){
 
     categoria.save((err, categoriaStored) => {
         if(err){
-            res.status(500).send({message: 'Error al guardar la Categoria'});
+            res.status(500).send({message: 'Error en la peticion'});
         }else{
             if(!categoriaStored){
                 res.status(404).send({message: 'No se pudo guardar la Categoria'});

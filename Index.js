@@ -6,6 +6,7 @@ var port = process.env.port || 3969;
 
 mongoose.set('useNewUrlParser', true);
 mongoose.set('useUnifiedTopology', true);
+mongoose.set('useFindAndModify', false);
 mongoose.Promise = global.Promise;
 mongoose.connect('mongodb://localhost:27017/CursoOnline',(err,res)=>{
     if (err){

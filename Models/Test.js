@@ -7,7 +7,7 @@ var TestSchema = Schema({
     name: String,
     description : String,
     type: String,
-    // curso: {type: schema.ObjectId,ref:'Curso'}
+    curso: {type: Schema.ObjectId,ref:'Curso'}
 })
 
 module.exports = mongoose.model('Test',TestSchema);

@@ -68,7 +68,6 @@ function saveCurso(req, res){
                 res.status(404).send({message: 'No se pudo guardar el Curso'});
             }else{
                 res.status(200).send({curso: cursoStored});
-                console.log(cursoStored);
             }
         }
     });

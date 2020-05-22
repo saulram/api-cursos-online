@@ -6,7 +6,7 @@ var Schema = mongoose.Schema;
 var PreguntaSchema = Schema({
     options: String,
     correct:  String,
-    // test: {type: schema.ObjectId,ref:'Test'}
+    test: {type: Schema.ObjectId,ref:'Test'}
 });
 
 module.exports = mongoose.model('Pregunta',PreguntaSchema);

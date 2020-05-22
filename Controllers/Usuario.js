@@ -17,7 +17,7 @@ function saveUsuario(req, res){
         usuario.role = params.role
         usuario.email = params.email
         usuario.status = params.status
-        usuario.avatar = params.avatar
+        usuario.avatar = 'null'
 
         if (params.password){
             bcrypt.hash(params.password, null, null,function(err,hash){

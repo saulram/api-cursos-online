@@ -94,18 +94,7 @@ function deletePregunta (req, res){
             if(!preguntaRemoved){
                 res.status(404).send({message: 'No se pudo elimanar la Pregunta'});
             }else{
-                res.status(200).send({message: 'Bien elimando'});
-                // Curso.find({categria: categoriaRemoved._id}).remove((err,cursoRemoved)=>{
-                //     if(err){
-                //         res.status(500).send({message: 'Error en la peticion'});
-                //     }else{
-                //         if(!cursoRemoved){
-                //             res.status(404).send({message: 'No se pudo elimanar el Curso'});
-                //         }else{
-                //             // Validacion de los hijos del modelo Curso.js
-                //         }
-                //     }
-                // });
+                res.status(200).send({pregunta: preguntaRemoved});
             }
         }
     });

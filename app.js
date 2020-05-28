@@ -7,6 +7,7 @@ var app = expres();
 
 //Cargar rutas
 var user_route = require  ('./Routes/Usuario');
+var cursoIns_route = require ('./Routes/CursoInscrito');
 var categoria_route = require ('./Routes/Categoria');
 var curso_route = require ('./Routes/Curso');
 var test_route = require ('./Routes/Test');
@@ -23,6 +24,7 @@ app.use(expres.urlencoded({extended:false}));
 
 //Ruta base
 app.use('/api',user_route);
+app.use('/api',cursoIns_route);
 app.use('/api',categoria_route);
 app.use('/api',curso_route);
 app.use('/api',test_route);

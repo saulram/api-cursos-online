@@ -98,18 +98,27 @@ function deleteCurso (req, res){
             if(!cursoRemoved){
                 res.status(404).send({message: 'No se pudo elimanar el Curso'});
             }else{
-                res.status(200).send({message: 'Bien elimando'});
-                // Curso.find({categria: categoriaRemoved._id}).remove((err,cursoRemoved)=>{
-                //     if(err){
-                //         res.status(500).send({message: 'Error en la peticion'});
-                //     }else{
-                //         if(!cursoRemoved){
-                //             res.status(404).send({message: 'No se pudo elimanar el Curso'});
-                //         }else{
-                //             // Validacion de los hijos del modelo Curso.js
-                //         }
-                //     }
-                // });
+                Leccion.find({curso: cursoRemoved._id}).remove((err,leccionRemoved)=>{
+                    if(err){
+                        res.status(500).send({message: 'Error en la peticion'});
+                    }else{
+                        if(!leccionRemoved){
+                            res.status(404).send({message: 'No se pudo elimanar la Leccion'});
+                        }else{
+                            DetalleLeccion.find({curso: LeccionRemoved._id}).remove((err,detleccionRemoved)=>{
+                                if(err){
+                                    res.status(500).send({message: 'Error en la peticion'});
+                                }else{
+                                    if(!detleccionRemoved){
+                                        res.status(404).send({message: 'No se pudo elimanar el Detalle del Curso'});
+                                    }else{
+                                        res.status(200).send({curso: cursoRemoved});
+                                    }
+                                }
+                            });
+                        }
+                    }
+                });
             }
         }
     });

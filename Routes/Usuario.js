@@ -8,6 +8,7 @@ var api = express.Router();
 var multipart = require('connect-multiparty');
 var md_upload = multipart({uploadDir: './uploads/usuario'});
 
+api.get('/getUsuarios/:page?',auth.ensureAuth,UserControl.getUuarios);
 api.post('/saveUsuario',UserControl.saveUsuario);
 api.post('/loginUsuario',UserControl.loginUsuario);
 api.put('/updateUsuario/:id',auth.ensureAuth,UserControl.updateUser);

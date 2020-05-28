@@ -1,11 +1,11 @@
 'use strict'
 
 var mongoose = require('mongoose');
-var schema = mongoose.schema;
+var Schema = mongoose.Schema;
 
-var CursoInsSchema = schema({
-    usuario: {type: schema.ObjectId,ref:'Usuario'},
-    curso: {type: schema.ObjectId,ref:'Curso'}
+var CursoInsSchema = Schema({
+    usuario: {type: Schema.ObjectId,ref:'Usuario'},
+    curso: {type: Schema.ObjectId,ref:'Curso'}
 })
 
 module.exports = mongoose.model('CursoIns',CursoInsSchema);

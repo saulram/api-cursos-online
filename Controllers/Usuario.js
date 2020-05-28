@@ -5,6 +5,30 @@ var bcrypt = require('bcrypt-nodejs');
 var Usuario = require('../Models/Usuario');
 var jwt = require('../Services/Jwt');
 
+function getUuarios (req, res){
+    if(req.params.page){
+        var paginas = req.params.page;
+    }else{
+        var paginas = 1;
+    }
+    var itemsPorPagina = 5;
+
+    Usuario.find().sort('name').paginate(paginas,itemsPorPagina,function(err,usuarios,total){
+        if(err){
+            res.status(500).send({message:'Error en la peticion'});
+        }else{
+            if(!usuarios){
+                res.status(404).send({message:'No existen Usuarios'});
+            }else{
+                return res.status(500).send({
+                    totalItems: total,
+                    usuarios: usuarios
+                });
+            }
+        }
+    });
+
+}
 function saveUsuario(req, res){
 
         var usuario = new Usuario();
@@ -145,6 +169,7 @@ function getImagen (req, res){
     })
 }
 module.exports = {
+    getUuarios,
     saveUsuario,
     loginUsuario,
     updateUser,
